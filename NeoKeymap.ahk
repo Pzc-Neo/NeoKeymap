@@ -84,7 +84,7 @@ global typoTip := new TypoTipWindow()
 semiHook := InputHook("C", "{Space}{BackSpace}{Esc}", "xk,ss,sk,sl,zk,dk,jt,gt,lx,sm,zh,gg,ver,xm,static,fs,fd,ff")
 semiHook.OnChar := Func("onTypoChar")
 semiHook.OnEnd := Func("onTypoEnd")
-capsHook := InputHook("C", "{Space}{BackSpace}{Esc}", "ss,sl,ex,rb,fp,fb,fg,dd,dp,dv,dr,se,no,sd,ld,we,st,dw,bb,gg,fr,fi,ee,dm,rex,fw,mm,md,cs,cm,ir,io,mw")
+capsHook := InputHook("C", "{Space}{BackSpace}{Esc}", "ss,sl,ex,rb,fp,fb,fg,dd,dp,dv,dr,se,no,sd,ld,we,st,dw,bb,gg,fr,fi,ee,dm,rex,fw,mm,md,cs,cm,ir,io,mw,ws")
 capsHook.OnChar := Func("capsOnTypoChar")
 capsHook.OnEnd := Func("capsOnTypoEnd")
 
@@ -274,15 +274,24 @@ return
 
 
 #if JMode
-k::enterJModeK()
+; 把原来的k改成o，因为k会影响双拼。
+o::enterJModeK()
 l::enterJModeL()
 
 *Space::
 send {blind}{enter}
 return
+; 拼音及双拼修复 - start
 *I::
 send, {blind}ji
 return
+*k::
+send, {blind}jk
+return
+*p::
+send, {blind}jp
+return
+; 拼音及双拼修复 - end
 *.::
 send, {blind}{insert}
 return
@@ -302,7 +311,7 @@ return
 *E::send {blind}{up}
 
     
-
+; 分号模式
 #if PunctuationMode
 *A::
 send {blind}*
@@ -471,7 +480,7 @@ WheelDown::send {blind}^#{right}
 Esc::exitMouseMode()
 *Space::exitMouseMode()
 
-
+; capslock 的 f mode
 #if FMode
 f::return
 
@@ -509,8 +518,9 @@ S::
     ActivateOrRun("ahk_exe Code.exe", path)
     return
 W::
-    path = %A_ProgramsCommon%\Google Chrome.lnk
-    ActivateOrRun("ahk_exe chrome.exe", path)
+    ; path = %A_ProgramsCommon%\Google Chrome.lnk
+    path = C:\Users\Administrator.USER-20181115EQ\AppData\Local\360Chrome\Chrome\Application\360chrome.exe
+    ActivateOrRun("ahk_exe 360chrome.exe", path)
     return
 D::
     path = %A_ProgramsCommon%\Microsoft Edge.lnk
@@ -699,6 +709,7 @@ return
     return true
 }
 
+; 执行capslock指令
 execCapslockAbbr(typo) {
     switch typo 
     {
@@ -783,6 +794,9 @@ execCapslockAbbr(typo) {
         case "sd":
            run, module\soundControl.ahk
           ;  run, module\ahk.exe module\soundControl.ahk
+        case "ws":
+           run, module\WindowSpy.ahk
+          ;  run, module\ahk.exe module\soundControl.ahk
         case "dd":
            run, shell:downloads
         case "dp":
@@ -848,6 +862,21 @@ capsOnTypoEnd(ih) {
 }
 
 enterCapslockAbbr(ih) 
+
+; {
+;     global DisableCapslockKey
+;     DisableCapslockKey := true
+
+;     typoTip.show("    ") 
+;     ih.Start()
+;     result := ih.Wait()
+;     ih.Stop()
+;     typoTip.hide()
+;     DisableCapslockKey := false
+
+;     if (ih.Match)
+;         execCapslockAbbr(ih.Match)
+; }
 {
     WM_USER := 0x0400
     SHOW_TYPO_WINDOW := WM_USER + 0x0001

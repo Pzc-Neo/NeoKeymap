@@ -8,7 +8,7 @@
 SetWorkingDir, %A_ScriptDir%
 SetBatchLines, -1
 CoordMode, Pixel, Screen
-Menu, Tray, Icon, logo.ico
+Menu, Tray, Icon, ..\assets\logo.ico
 
 txtNotFrozen := "(按 Ctrl 键暂停刷新)"
 txtFrozen := "(Updates suspended)"
@@ -65,7 +65,7 @@ Loop, Parse, list, `,
 return
 
 Update:
-Gui %hGui%:Default
+; Gui %hGui%:Default
 GuiControlGet, Ctrl_FollowMouse
 CoordMode, Mouse, Screen
 MouseGetPos, msX, msY, msWin, msCtrl

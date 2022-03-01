@@ -652,6 +652,7 @@ leftClick()
 {
     global SLOWMODE
     send,  {blind}{LButton}
+    ; Click
     SLOWMODE := false
 }
 
@@ -713,8 +714,9 @@ ReloadProgram()
 {
     Menu, Tray, NoIcon 
     tooltip, ` ` Reload !` ` 
-    run, MyKeymap.exe
-    ExitApp
+    Reload
+    ; run, MyKeymap.exe
+    ; ExitApp
     ;run, "%exeFullPath%" Reload
     ;process, close, %pid%
     ;process, close, ahk.exe
@@ -1121,7 +1123,7 @@ trayMenuHandler(ItemName, ItemPos, MenuName)
         run, https://xianyukang.com/MyKeymap.html
     }
     if (InStr(ItemName, "查看窗口标识符" )) {
-        run, module\ahk.exe module\WindowSpy.ahk
+        run, module\WindowSpy.ahk
     }
 
 }
@@ -1186,7 +1188,7 @@ enterJModeK()
 {
     global
     JModeK := true
-    keywait k
+    keywait o
     JModeK := false
 }
 
