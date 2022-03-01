@@ -111,11 +111,15 @@ RAlt::LCtrl
     keywait capslock
     CapslockMode := false
     if (A_ThisHotkey == "*capslock" && A_PriorKey == "CapsLock" && A_TimeSinceThisHotkey < 450) {
-        enterCapslockAbbr(capsHook)
+      ; 取消单按capslock键的指令功能，改为发送escape键
+        ; enterCapslockAbbr(capsHook)
+        send {blind}{Escape}
     }
     enableOtherHotkey(thisHotkey)
-    return
-
+   return
+; 右shift进入指令模式   
+*RShift::
+  enterCapslockAbbr(capsHook)
 
 *j::
     thisHotkey := A_ThisHotkey
@@ -765,8 +769,8 @@ execCapslockAbbr(typo) {
     return
         case "sl":
            DllCall("PowrProf\SetSuspendState", "Int", 0, "Int", 0, "Int", 0)
-        case "se":
-           openSettings()
+        ; case "se":
+        ;    openSettings()
         case "ex":
            quit(false)
         case "rex":
@@ -774,9 +778,11 @@ execCapslockAbbr(typo) {
         case "dm":
            run, %A_WorkingDir%
         case "ld":
-           run, module\ahk.exe module\changeBrightness.ahk
+           run, module\changeBrightness.ahk
+          ;  run, module\ahk.exe module\changeBrightness.ahk
         case "sd":
-           run, module\ahk.exe module\soundControl.ahk
+           run, module\soundControl.ahk
+          ;  run, module\ahk.exe module\soundControl.ahk
         case "dd":
            run, shell:downloads
         case "dp":
