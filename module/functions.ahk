@@ -701,6 +701,7 @@ postCharToTipWidnow(char) {
 
 
 postMessageToTipWidnow(messageType) {
+  typoTip.show(messageType)
     oldValue := A_DetectHiddenWindows
     DetectHiddenWindows, 1
     if WinExist("ahk_class MyKeymap_Typo_Window")
@@ -1104,15 +1105,6 @@ toggleSuspend()
 
 trayMenuHandler(ItemName, ItemPos, MenuName)
 {
-    if (InStr(ItemName, "退出" )) {
-        myExit()
-    }
-    if (InStr(ItemName, "暂停" )) {
-        toggleSuspend()
-    }
-    if (InStr(ItemName, "打开设置" )) {
-        openSettings()
-    }
     if (InStr(ItemName, "检查更新" )) {
         run, https://xianyukang.com/MyKeymap-Change-Log.html
     }
@@ -1124,6 +1116,18 @@ trayMenuHandler(ItemName, ItemPos, MenuName)
     }
     if (InStr(ItemName, "查看窗口标识符" )) {
         run, module\WindowSpy.ahk
+    }
+    ; if (InStr(ItemName, "打开设置" )) {
+    ;     openSettings()
+    ; }
+    if (InStr(ItemName, "重新载入" )) {
+        ReloadProgram()
+    }
+    if (InStr(ItemName, "退出" )) {
+        myExit()
+    }
+    if (InStr(ItemName, "暂停" )) {
+        toggleSuspend()
     }
 
 }

@@ -58,18 +58,19 @@ allHotkeys.Push("*;")
 allHotkeys.Push("RButton")
 
 Menu, Tray, NoStandard
-Menu, Tray, Add, 暂停, trayMenuHandler
-Menu, Tray, Add, 退出, trayMenuHandler
-Menu, Tray, Add, 打开设置, trayMenuHandler 
+; Menu, Tray, Add, 打开设置, trayMenuHandler 
 Menu, Tray, Add, 视频教程, trayMenuHandler
 Menu, Tray, Add, 帮助文档, trayMenuHandler 
 Menu, Tray, Add, 检查更新, trayMenuHandler 
 Menu, Tray, Add, 查看窗口标识符, trayMenuHandler 
+Menu, Tray, Add, 重新载入, trayMenuHandler 
+Menu, Tray, Add, 暂停, trayMenuHandler
+Menu, Tray, Add, 退出, trayMenuHandler
 Menu, Tray, Add 
 
 Menu, Tray, Icon
 Menu, Tray, Icon, assets\logo.ico,, 1
-Menu, Tray, Tip, NeoKeymap 1.0 by 咸鱼阿康
+Menu, Tray, Tip, NeoKeymap 1.0 by Pzc_Neo
 ; processPath := getProcessPath()
 ; SetWorkingDir, %processPath%
 
@@ -864,15 +865,16 @@ capsOnTypoEnd(ih) {
 enterCapslockAbbr(ih) 
 
 ; {
-;     global DisableCapslockKey
-;     DisableCapslockKey := true
+;     ; global DisableCapslockKey
+;     ; DisableCapslockKey := true
 
 ;     typoTip.show("    ") 
 ;     ih.Start()
 ;     result := ih.Wait()
+;     ; typoTip.show(ih.match())
 ;     ih.Stop()
 ;     typoTip.hide()
-;     DisableCapslockKey := false
+;     ; DisableCapslockKey := false
 
 ;     if (ih.Match)
 ;         execCapslockAbbr(ih.Match)
@@ -884,7 +886,6 @@ enterCapslockAbbr(ih)
 
     postMessageToTipWidnow(SHOW_TYPO_WINDOW)
     result := ""
-
 
     ih.Start()
     endReason := ih.Wait()
