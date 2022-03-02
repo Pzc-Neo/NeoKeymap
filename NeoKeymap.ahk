@@ -329,13 +329,13 @@ return
 return
 *U::send {blind}$
 *R::send {blind}&
-*Q::send {blind}(
+*Q::send {blind}@
   *M::send {blind}-
   *C::send {blind}.
   *N::send {blind}/
-  *S::send {blind}<
-  *D::send {blind}=
-  *F::send {blind}>
+  *S::send {blind}(
+    *D::send {blind}=
+  *F::send {blind})
   *Y::send {blind}@
   *Z::send {blind}\
   *X::send {blind}_
