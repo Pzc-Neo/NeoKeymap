@@ -616,6 +616,13 @@ arrayContains(arr, target)
 
 postCharToTipWidnow(char) {
   oldValue := A_DetectHiddenWindows
+
+  global CapslockAbbrCommandChar
+  CapslockAbbrCommandChar := CapslockAbbrCommandChar char
+  ; 转为大写
+  StringUpper, CapslockAbbrCommandChar, CapslockAbbrCommandChar
+  _ShowTip(CapslockAbbrCommandChar,60)
+
   DetectHiddenWindows, 1
   if WinExist("ahk_class MyKeymap_Typo_Window")
     PostMessage, 0x0102, Ord(char), 0

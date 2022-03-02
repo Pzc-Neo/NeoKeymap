@@ -88,7 +88,7 @@ allHotkeys.Push("*;")
   capsHook.OnChar := Func("capsOnTypoChar")
   capsHook.OnEnd := Func("capsOnTypoEnd")
 
-  #include data/custom_functions.ahk
+  #include data/customFunctions.ahk
   return
 
   RAlt::LCtrl
@@ -865,44 +865,38 @@ capsOnTypoEnd(ih) {
   ; typoTip.show(ih.Input)
 }
 
+; 记录当前输入的指令
+global CapslockAbbrCommandChar = ""
 enterCapslockAbbr(ih) 
-
-; {
-;     ; global DisableCapslockKey
-;     ; DisableCapslockKey := true
-
-;     typoTip.show("    ") 
-;     ih.Start()
-;     result := ih.Wait()
-;     ; typoTip.show(ih.match())
-;     ih.Stop()
-;     typoTip.hide()
-;     ; DisableCapslockKey := false
-
-;     if (ih.Match)
-;         execCapslockAbbr(ih.Match)
-; }
 {
   ; ShowTip("进入指令模式",500)
 
+  _ShowTip("",60)
   WM_USER := 0x0400
   SHOW_TYPO_WINDOW := WM_USER + 0x0001
   HIDE_TYPO_WINDOW := WM_USER + 0x0002
 
-  postMessageToTipWidnow(SHOW_TYPO_WINDOW)
-  result := ""
+  ; postMessageToTipWidnow(SHOW_TYPO_WINDOW)
+  ; result := ""
 
   ih.Start()
   endReason := ih.Wait()
   ih.Stop()
   if InStr(endReason, "EndKey") {
+    CapslockAbbrCommandChar := ""
+    ; SetTimer, CancelTip, 50
+    CancelTip()
   }
   if InStr(endReason, "Match") {
     lastChar := SubStr(ih.Match, ih.Match.Length-1)
     postCharToTipWidnow(lastChar)
     SetTimer, delayedHideTipWindow, -50
-  } else {
-    postMessageToTipWidnow(HIDE_TYPO_WINDOW)
+
+    CapslockAbbrCommandChar := ""
+    ; SetTimer, CancelTip, 300
+    CancelTip()
+    ; } else {
+    ;   postMessageToTipWidnow(HIDE_TYPO_WINDOW)
   }
   if (ih.Match)
     execCapslockAbbr(ih.Match)
