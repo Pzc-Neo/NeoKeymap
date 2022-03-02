@@ -69,7 +69,7 @@ Menu, Tray, Add
 
 Menu, Tray, Icon
 Menu, Tray, Icon, assets\logo.ico,, 1
-Menu, Tray, Tip, MyKeymap 1.0 by 咸鱼阿康
+Menu, Tray, Tip, NeoKeymap 1.0 by 咸鱼阿康
 ; processPath := getProcessPath()
 ; SetWorkingDir, %processPath%
 
