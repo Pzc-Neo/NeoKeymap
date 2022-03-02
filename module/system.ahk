@@ -15,15 +15,26 @@ slideToShutdown()
   }
   else
   {
-    showTip("取消关机")
+    showTip("取消关机",1500)
   }
 }
 
 slideToReboot()
 {
+  MsgBox, 4,, 确定要重启吗?
+  IfMsgBox Yes
+  {
+    shutdown, 2
+    ; run, SlideToShutDown
+    ; sleep, 1300
+    ; MouseClick, Left, 100, 100
+  }
+  else
+  {
+    showTip("取消重启",1500)
+  }
   ; run, SlideToShutDown
   ; sleep, 1300
   ; MouseClick, Left, 100, 100
   ; sleep, 250
-  shutdown, 2
 }

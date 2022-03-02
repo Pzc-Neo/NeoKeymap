@@ -571,8 +571,9 @@ O::
     ActivateOrRun("OneNote for Windows 10", path)
 return
 A::
-  path = shortcuts\Windows Terminal Preview.lnk
-  ActivateOrRun("ahk_exe WindowsTerminal.exe", path)
+  ; path = shortcuts\Windows Terminal Preview.lnk
+  path = cmd.exe
+  ActivateOrRun("ahk_exe cmd.exe", path)
 return
 
 #if CapslockSpaceMode
