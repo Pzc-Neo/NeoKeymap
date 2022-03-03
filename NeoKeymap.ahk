@@ -393,6 +393,7 @@ return
 *I::send {blind}8
 *O::send {blind}9
 *;::send {blind},
+*Q::send {blind}{backspace}
 
 *r::
   DigitMode := false
@@ -453,6 +454,14 @@ X::SmartCloseWindow()
 R::SwitchWindows()
 Q::winmaximize, A
 B::winMinimizeIgnoreDesktop()
+*=:: ;窗口透明化增加或者减弱
+  WinGet, ow, id, A
+  WinTransplus(ow)
+return
+*-:: ;窗口透明化增加或者减弱
+  WinGet, ow, id, A
+  WinTransMinus(ow)
+return
 
 f::
   FMode := true
