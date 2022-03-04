@@ -92,6 +92,7 @@ allHotkeys.Push("*;")
   return
 
   RAlt::LCtrl
+  ; /::LShift
 
   !+'::
     Suspend, Permit

@@ -14,7 +14,7 @@ _ShowTip(text, size)
   GUI, +Owner +LastFound
 
   Font_Colour := 0xFFFFFF ;0x2879ff
-  Back_Colour := 0x000000 ; 0x34495e
+  Back_Colour := 0x00897B ; 0x34495e
   GUI, Margin, %fontsize%, % fontsize / 2
   GUI, Color, % Back_Colour
   GUI, Font, c%Font_Colour% s%fontsize%, Microsoft YaHei UI
