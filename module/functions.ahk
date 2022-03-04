@@ -871,20 +871,20 @@ htmlEscape(text)
             {
 
               text := " " ; 初始化 text control 的宽度
-              fontSize := 12
-              Font_Colour := 0x0 ;0x2879ff
-              Back_Colour := 0xffffe1 ; 0x34495e
+              fontSize := 21
+              Font_Colour := 0x0785D4 ;0x2879ff
+              Back_Colour := 0xffffff ;0xffffe1 ; 0x34495e
 
               Gui, TYPO_TIP_WINDOW:New, +hwndhGui, ` 
               this.hwnd := hGui ; 保存 hwnd 目前没什么用
 
               Gui, +Owner +ToolWindow +Disabled -SysMenu -Caption +E0x20 +AlwaysOnTop +Border
-              GUI, Margin, %fontsize%, % fontsize / 5
+              GUI, Margin, % fontsize/5, % fontsize / 5
               GUI, Color, % Back_Colour
               GUI, Font, c%Font_Colour% s%fontsize%, Microsoft Sans Serif
 
               static ControlID ; 存储控件 ID,  不同于 Hwnd
-              GUI, Add, Text, vControlID center, %text%
+              GUI, Add, Text, vControlID w50 h30 center, %text%
               GuiControlGet, OutputVar, Hwnd , ControlID ; 获取 Hwnd
               this.textHwnd := OutputVar ; 保存到对象属性
 
