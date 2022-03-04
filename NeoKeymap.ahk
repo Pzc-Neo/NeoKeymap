@@ -338,11 +338,11 @@ return
 *F::send {blind})
 *Y::send {blind}@
 *Z::send {blind}\
-*X::send {blind}_
+*X::send {blind}|
 *G::send {blind}{!}
 *W::send {blind}{#}
 *E::send {blind}{^}
-*V::send {blind}|
+*V::send {blind}_
 *T::send {blind}~
 
 ; 数字模式
@@ -431,7 +431,7 @@ return
   send {blind}#{right}
 return
 S::center_window_to_current_monitor(1200, 800)
-A::center_window_to_current_monitor(1370, 930)
+A::center_window_to_current_monitor(800, 600)
 */::centerMouse()
 *I::fastMoveMouse("I", 0, -1)
 *J::fastMoveMouse("J", -1, 0)
@@ -543,16 +543,20 @@ W::
   ActivateOrRun("ahk_exe 360chrome.exe", path)
 return
 D::
-  path = %A_ProgramsCommon%\Microsoft Edge.lnk
-  ActivateOrRun("ahk_exe msedge.exe", path)
+  ; path = %A_ProgramsCommon%\Microsoft Edge.lnk
+  ; ActivateOrRun("ahk_exe msedge.exe", path)
+  path = C:\Program Files (x86)\Notepad++\notepad++.exe
+  ActivateOrRun("ahk_exe notepad++.exe", path, "", "")
 return
 H::
   path = %A_ProgramsCommon%\Visual Studio 2019.lnk
   ActivateOrRun("- Microsoft Visual Studio", path)
 return
 E::
-  path = C:\Program Files (x86)\Yinxiang Biji\印象笔记\Evernote.exe
-  ActivateOrRun("ahk_class YXMainFrame", path)
+  ; path = C:\Program Files (x86)\Youdao\YoudaoNote\YoudaoNote.exe
+  ; ActivateOrRun("ahk_exe YoudaoNote.exe", path)
+  path = E:\Program Files\VNote\VNote.exe
+  ActivateOrRun("ahk_exe VNote.exe", path)
 return
 I::
   path = C:\Program Files\Typora\Typora.exe
@@ -564,8 +568,8 @@ L::
   ActivateOrRun("ahk_exe EXCEL.EXE", path, "", workingDir)
 return
 P::
-  path = C:\ProgramData\Microsoft\Windows\Start Menu\Programs\PowerPoint.lnk
-  ActivateOrRun("ahk_exe POWERPNT.EXE", path, "", "")
+  path = C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+  ActivateOrRun("ahk_exe powershell.exe", path, "", "")
 return
 Z::
   path = D:\
@@ -581,12 +585,19 @@ O::
 return
 A::
   ; path = shortcuts\Windows Terminal Preview.lnk
-  path = cmd.exe
+  path = %windir%\system32\cmd.exe
   ActivateOrRun("ahk_exe cmd.exe", path)
+return
+B::
+  path = "E:\Program Files\BookxNote Pro\BookxNotePro.exe"
+  ActivateOrRun("ahk_exe BookxNotePro.exe", path)
 return
 
 #if CapslockSpaceMode
 space::return
+f::
+  send, {Blind}测试 Capslock_space 模式
+return 
 
 #if DisableCapslockKey
 *capslock::return
@@ -779,9 +790,8 @@ case "md":
   ActivateOrRun("MyKeymap.md - Typora", path, "", "")
 return
 case "no":
-
-  path = notepad.exe
-  ActivateOrRun("记事本", path, "", "")
+  path = C:\Program Files (x86)\Notepad++\notepad++.exe
+  ActivateOrRun("ahk_exe notepad++.exe", path, "", "")
 return
 case "st":
 
@@ -789,9 +799,8 @@ case "st":
   ActivateOrRun("Microsoft Store", path, "", "")
 return
 case "we":
-
-  path = shortcuts\网易云音乐.lnk
-  ActivateOrRun("网易云音乐", path)
+  path = C:\Program Files (x86)\Netease\CloudMusic\cloudmusic.exe 
+  ActivateOrRun("ahk_exe cloudmusic.exe", path)
 return
 case "sl":
   DllCall("PowrProf\SetSuspendState", "Int", 0, "Int", 0, "Int", 0)
