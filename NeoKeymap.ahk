@@ -84,7 +84,7 @@ allHotkeys.Push("*;")
   semiHook := InputHook("C", "{Space}{BackSpace}{Esc}", "xk,ss,sk,sl,zk,dk,jt,gt,lx,sm,zh,gg,ver,xm,static,fs,fd,ff")
   semiHook.OnChar := Func("onTypoChar")
   semiHook.OnEnd := Func("onTypoEnd")
-  capsHook := InputHook("C", "{Space}{BackSpace}{Esc}", "ss,sl,ex,rb,fp,fb,fg,dd,dp,dv,dr,se,no,sd,ld,we,st,dw,bb,gg,fr,fi,ee,dm,rex,fw,mm,md,cs,cm,ir,io,mw,ws")
+  capsHook := InputHook("C", "{Space}{BackSpace}{Esc}", "ss,sl,ex,et,rb,fp,fb,fg,dd,dp,dv,dr,se,no,sd,ld,we,st,dw,bb,gg,fr,fi,ee,dm,rex,fw,mm,md,cs,cm,ir,io,mw,ws")
   capsHook.OnChar := Func("capsOnTypoChar")
   capsHook.OnEnd := Func("capsOnTypoEnd")
 
@@ -808,6 +808,12 @@ case "sl":
   ;    openSettings()
 case "ex":
   quit(false)
+case "et":
+  ; 用notepad++ 编辑temp.ahk
+  path = C:\Program Files (x86)\Notepad++\notepad++.exe
+  temp := % A_ScriptDir . "\data\lib\temp.ahk"
+  ActivateOrRun("temp.ahk - notepad++.exe", path,temp,"")
+return
 case "rex":
   restartExplorer()
 case "dm":
