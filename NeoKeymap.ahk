@@ -261,6 +261,12 @@ return
 *R::
   send, {blind}^{tab}
 return
+*T::
+  send {blind}{pgdn}
+return
+*Q::
+  send {blind}{pgup}
+return
 
 #if JMode
   ; 把原来的k改成o，因为k会影响双拼。
