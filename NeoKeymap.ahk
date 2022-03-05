@@ -9,6 +9,7 @@
 #include module/functions.ahk
 #include data/config.ahk
 
+; 全局配置
 global g_config := readConfig()
 
 StringCaseSense, On
@@ -98,7 +99,7 @@ allHotkeys.Push("*;")
   return
 
   RAlt::LCtrl
-  ; /::LShift
+  /::LShift
 
   !+'::
     Suspend, Permit

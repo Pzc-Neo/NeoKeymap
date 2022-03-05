@@ -58,6 +58,8 @@ class CLayout
     GUI, Font, c%fgColor% s12, 等线
     ; Gui, Font,% c . this.fgColor . A_Space . s12, 等线
     Gui Add, Text, x6 y296 w590 h20 +0x200, EDSF调节音量、AG上一首下一首、空格切换静音、C暂停/播放、V设置、X退出
+    ; GUI, +LastFound +Resize -Caption -Border -MaximizeBox +MinSize%GuiW%x%GuiH%
+    ; Gui, -Caption +Border
   }
   show()
   {
