@@ -7,6 +7,9 @@
 #Include, module/common.ahk
 #Include, module/system.ahk
 #include module/functions.ahk
+#include data/config.ahk
+
+global g_config := readConfig()
 
 StringCaseSense, On
 SetWorkingDir %A_ScriptDir%
@@ -71,7 +74,10 @@ allHotkeys.Push("*;")
 
   Menu, Tray, Icon
   Menu, Tray, Icon, assets\logo.ico,, 1
-  Menu, Tray, Tip, NeoKeymap 1.0 by Pzc_Neo
+  name := g_config.name
+  version := g_config.version
+  author := g_config.author
+  Menu, Tray, Tip, %name% %version% by %author% 
   ; processPath := getProcessPath()
   ; SetWorkingDir, %processPath%
 

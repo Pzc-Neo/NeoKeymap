@@ -5,6 +5,7 @@ ListLines Off
 SetWorkingDir %A_ScriptDir%
 Menu, Tray, Icon, ..\assets\logo.ico
 SendMode Input
+#include data/config.ahk
 
 layout := new CLayout()
 
@@ -45,7 +46,17 @@ class CLayout
     Gui MyGui:New, +HwndGuiHwnd
     Gui MyGui:+LabelMyGui_On
     ; Gui, Font,, Consolas
-    Gui, Font, s12, 等线
+
+    config := readConfig()
+    fgColor := % config.style.fgColor ;0x2879ff
+    bgColor := % config.style.bgColor ; 0x34495e
+    this.fgColor := fgColor
+    this.bgColor := bgColor
+
+    GUI, Color, % this.bgColor
+    ; GUI, Font, c%Font_Colour% s12, Microsoft YaHei UI
+    GUI, Font, c%fgColor% s12, 等线
+    ; Gui, Font,% c . this.fgColor . A_Space . s12, 等线
     Gui Add, Text, x6 y296 w590 h20 +0x200, EDSF调节音量、AG上一首下一首、空格切换静音、C暂停/播放、V设置、X退出
   }
   show()
@@ -120,7 +131,12 @@ class Mon
     global monitorIcon3
     global monitorIcon4
 
-    Gui, Font, s128 c0
+    config := readConfig()
+    fgColor := % config.style.fgColor ;0x2879ff
+    ; bgColor := % config.style.bgColor ; 0x34495e
+    this.fgColor := fgColor
+    ; this.bgColor := bgColor
+    Gui, Font, s128 c%fgColor%
     Gui Add, Text, x%X% y%Y% w%W% h%H% +0x200 vMonitorIcon%i%, 🔊
     X += 62
     Y += 190
@@ -129,7 +145,7 @@ class Mon
     this.i := i
     this.useWmi := false
 
-    Gui, Font, s32 c0
+    Gui, Font, s32 c%fgColor%
     Gui Add, Text, x%X% y%Y% w%W% h%H% +0x200 vMonitorText%i%, 100
     GuiControl +BackgroundTrans, MonitorText%i%
   }

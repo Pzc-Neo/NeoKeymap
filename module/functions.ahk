@@ -872,8 +872,10 @@ htmlEscape(text)
 
               text := " " ; 初始化 text control 的宽度
               fontSize := 21
-              Font_Colour := 0xffffff ;0x2879ff
-              Back_Colour := 0x00897B ;0xffffe1 ; 0x34495e
+
+              global g_config
+              Font_Colour := % g_config.style.fgColor ;0x2879ff
+              Back_Colour := % g_config.style.bgColor ;0xffffe1 ; 0x34495e
 
               Gui, TYPO_TIP_WINDOW:New, +hwndhGui, ` 
               this.hwnd := hGui ; 保存 hwnd 目前没什么用
