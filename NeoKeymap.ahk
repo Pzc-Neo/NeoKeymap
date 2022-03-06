@@ -8,9 +8,14 @@
 #Include, module/system.ahk
 #include module/functions.ahk
 #include data/config.ahk
+#Include, module\libs\ExecScript.ahk
 
 ; 全局配置
 global g_config := readConfig()
+
+; temp := g_config.test
+; MsgBox, % temp
+; ExecScript(temp)
 
 StringCaseSense, On
 SetWorkingDir %A_ScriptDir%
@@ -318,7 +323,7 @@ return
 *R::send {blind}{tab}
 *E::send {blind}{up}
 
-; 分号模式
+; 分号模式 (符号)
 #if PunctuationMode
 *A::
 send {blind}*
@@ -349,10 +354,11 @@ return
 *Q::send {blind}@
 *M::send {blind}-
 *C::send {blind}.
+*L::send {blind}?
 *N::send {blind}/
-*S::send {blind}(
-  *D::send {blind}=
-*F::send {blind})
+*S::send {blind}<
+*D::send {blind}=
+*F::send {blind}>
 *Y::send {blind}@
 *Z::send {blind}\
 *X::send {blind}|
@@ -558,6 +564,10 @@ W::
   ; path = %A_ProgramsCommon%\Google Chrome.lnk
   path = C:\Users\Administrator.USER-20181115EQ\AppData\Local\360Chrome\Chrome\Application\360chrome.exe
   ActivateOrRun("ahk_exe 360chrome.exe", path)
+return
+Y::
+  path = C:\Program Files (x86)\Youdao\YoudaoNote\YoudaoNote.exe 
+  ActivateOrRun("ahk_exe YoudaoNote.exe", path)
 return
 D::
   ; path = %A_ProgramsCommon%\Microsoft Edge.lnk
@@ -904,8 +914,6 @@ capsOnTypoEnd(ih) {
 global CapslockAbbrCommandChar = ""
 enterCapslockAbbr(ih) 
 {
-  ; ShowTip("进入指令模式",500)
-
   _ShowTip("",60)
   WM_USER := 0x0400
   SHOW_TYPO_WINDOW := WM_USER + 0x0001
@@ -942,4 +950,3 @@ delayedHideTipWindow()
   HIDE_TYPO_WINDOW := 0x0400 + 0x0002
   postMessageToTipWidnow(HIDE_TYPO_WINDOW)
 }
-

@@ -42,4 +42,3 @@ CancelTip()
 {
   gui,G_Tip:destroy
 }
-

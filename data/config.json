@@ -5,5 +5,7 @@
   "style": {
     "fgColor": "0x333333",
     "bgColor": "0xffffff"
-  }
+  },
+  "test": "send, {blind}`%  \nsend, {blind}<> \nsend, {blind}``",
+  "test1": "run C:\\Program Files (x86)\\Notepad++\\notepad++.exe"
 }

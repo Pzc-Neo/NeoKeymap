@@ -619,8 +619,9 @@ postCharToTipWidnow(char) {
 
   global CapslockAbbrCommandChar
   CapslockAbbrCommandChar := CapslockAbbrCommandChar char
-  ; 转为大写
-  StringUpper, CapslockAbbrCommandChar, CapslockAbbrCommandChar
+  ; 转为大写(还是不转比较好，因为匹配的时候是没有转大写的。
+  ; 有时候不小心输入大写，就会出现指令看上去正确，但是却没有执行的情况。 )
+  ; StringUpper, CapslockAbbrCommandChar, CapslockAbbrCommandChar
   _ShowTip(CapslockAbbrCommandChar,60)
 
   DetectHiddenWindows, 1
