@@ -5,7 +5,7 @@
 #SingleInstance, force
 #NoTrayIcon
 SetWorkingDir %A_ScriptDir% ; Ensures a consistent starting directory.
-Menu, Tray, Icon, ..\assets\logo.ico
+Menu, Tray, Icon, ..\..\assets\logo.ico
 SendMode Input ; Recommended for new scripts due to its superior speed and reliability.
 
 #Include, %A_ScriptDir%\Monitor.ahk

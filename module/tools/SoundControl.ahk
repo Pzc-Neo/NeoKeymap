@@ -3,7 +3,7 @@
 #NoTrayIcon
 ListLines Off
 SetWorkingDir %A_ScriptDir%
-Menu, Tray, Icon, ..\assets\logo.ico
+Menu, Tray, Icon, ..\..\assets\logo.ico
 SendMode Input
 #include data/config.ahk
 

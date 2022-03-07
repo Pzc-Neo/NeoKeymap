@@ -8,7 +8,7 @@
 #Include, module/system.ahk
 #include module/functions.ahk
 #include data/config.ahk
-#Include, module\libs\ExecScript.ahk
+#Include, module/libs/ExecScript.ahk
 
 ; 全局配置
 global g_config := readConfig()
@@ -83,7 +83,7 @@ allHotkeys.Push("*;")
   name := g_config.name
   version := g_config.version
   author := g_config.author
-  Menu, Tray, Tip, %name% %version% by %author% 
+  Menu, Tray, Tip, %name% %version% by %author% `n修改自 MyKeymap by 咸鱼阿康
   ; processPath := getProcessPath()
   ; SetWorkingDir, %processPath%
 
@@ -831,7 +831,7 @@ case "ir":
   ActivateOrRun("room-api ahk_exe idea64.exe", path, "D:\work\room-api", "")
 return
 case "ld":
-  run, module\changeBrightness.ahk
+  run, module\tools\changeBrightness.ahk
   ;  run, module\ahk.exe module\changeBrightness.ahk
 case "md":
   path = D:\project\my_site\docs\MyKeymap.md
@@ -854,7 +854,7 @@ case "rb":
 case "rex":
   restartExplorer()
 case "sd":
-  run, module\soundControl.ahk
+  run, module\tools\soundControl.ahk
   ;  run, module\ahk.exe module\soundControl.ahk
   ; case "se":
   ;    openSettings()
@@ -871,7 +871,7 @@ case "we":
   path = C:\Program Files (x86)\Netease\CloudMusic\cloudmusic.exe 
   ActivateOrRun("ahk_exe cloudmusic.exe", path)
 case "ws":
-  run, module\WindowSpy.ahk
+  run, module\tools\WindowSpy.ahk
   ;  run, module\ahk.exe module\soundControl.ahk
 default: 
 return false

@@ -1029,7 +1029,7 @@ htmlEscape(text)
               run, https://xianyukang.com/MyKeymap.html
             }
             if (InStr(ItemName, "查看窗口标识符" )) {
-              run, module\WindowSpy.ahk
+              run, module\tools\WindowSpy.ahk
             }
             ; if (InStr(ItemName, "打开设置" )) {
             ;     openSettings()

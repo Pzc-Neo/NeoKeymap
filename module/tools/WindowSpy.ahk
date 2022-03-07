@@ -8,7 +8,7 @@
 SetWorkingDir, %A_ScriptDir%
 SetBatchLines, -1
 CoordMode, Pixel, Screen
-Menu, Tray, Icon, ..\assets\logo.ico
+Menu, Tray, Icon, ..\..\assets\logo.ico
 
 txtNotFrozen := "(按 Ctrl 键暂停刷新)"
 txtFrozen := "(Updates suspended)"
