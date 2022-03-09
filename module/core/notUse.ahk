@@ -153,3 +153,23 @@ moveActiveWindow()
     send {left}
   }
 }
+
+enterJModeO()
+{
+  global JMode,JModeO
+  JModeO := true
+  JMode := false
+  keywait o
+  JModeO := false
+  JMode := true
+}
+
+enterJModeL()
+{
+  global JMode,JModeL
+  JModeL := true
+  JMode := false
+  keywait l
+  JModeL := false
+  JMode := true
+}

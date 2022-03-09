@@ -5,15 +5,11 @@
 #WinActivateForce ; 解决「 winactivate 最小化的窗口时不会把窗口放到顶层(被其他窗口遮住) 」
 #InstallKeybdHook ; 可能是 ahk 自动卸载 hook 导致的丢失 hook,  如果用这行指令, ahk 是否就不会卸载 hook 了呢?
 #include data/config.ahk
-global g_config := readConfig()
+global gConfig := readConfig()
 
 #include, module/main.ahk
 #Include, module/libs/ExecScript.ahk
-; Include, module\libs\customToolTip.ahk
-
-; temp := g_config.test
-; MsgBox, % temp
-; ExecScript(temp)
+; #Include, module\libs\customToolTip.ahk
 
 StringCaseSense, On
 SetWorkingDir %A_ScriptDir%
@@ -63,15 +59,13 @@ allHotkeys := []
 allHotkeys.Push("*3")
 allHotkeys.Push("*j")
 allHotkeys.Push("*capslock")
+allHotkeys.Push("RButton")
 allHotkeys.Push("*;")
-  allHotkeys.Push("RButton")
 
   Menu, Tray, NoStandard
-  ; Menu, Tray, Add, 打开设置, trayMenuHandler 
   Menu, Tray, Add, 视频教程, trayMenuHandler
   Menu, Tray, Add, 帮助文档, trayMenuHandler 
-  Menu, Tray, Add, autoHotKey文档-英文, trayMenuHandler 
-  Menu, Tray, Add, autoHotKey文档-中文, trayMenuHandler 
+  Menu, Tray, Add, AutoHotKey文档, trayMenuHandler 
   Menu, Tray, Add, 检查更新, trayMenuHandler 
   Menu, Tray, Add, 查看窗口标识符, trayMenuHandler 
   Menu, Tray, Add, 打开设置, trayMenuHandler 
@@ -82,14 +76,10 @@ allHotkeys.Push("*;")
 
   Menu, Tray, Icon
   Menu, Tray, Icon, assets\logo.ico,, 1
-  name := g_config.name
-  version := g_config.version
-  author := g_config.author
+  name := gConfig.name
+  version := gConfig.version
+  author := gConfig.author
   Menu, Tray, Tip, %name% %version% by %author% `n修改自 MyKeymap by 咸鱼阿康
-  ; processPath := getProcessPath()
-  ; MsgBox, % processPath
-  ; run,% processPath
-  ; SetWorkingDir, %processPath%
 
   CoordMode, Mouse, Screen
   ; 多显示器不同缩放比例导致的问题,  https://www.autohotkey.com/boards/viewtopic.php?f=14&t=13810
@@ -223,735 +213,107 @@ allHotkeys.Push("*;")
       sleep, 70
       Hotkey, %thisHotkey%, On
       return
-
     }
 
-    #if JModeK
-      k::return
-  *V::
-    send, {blind}+{del}
-  return
-  *D::
-    send, {blind}+{down}
-  return
-  *G::
-    send, {blind}+{end}
-  return
-  *X::
-    send, {blind}+{esc}
-  return
-  *A::
-    send, {blind}+{home}
-  return
-  *S::
-    send, {blind}+{left}
-  return
-  *F::
-    send, {blind}+{right}
-  return
-  *E::
-    send, {blind}+{up}
-  return
-  *W::
-    send, {blind}^+{left}
-  return
-  *R::
-    send, {blind}^+{right}
-  return
-  *C::
-    send, {blind}{bs}
-  return
-  *T::
-    send, {blind}{home}+{end}
-  return
+    #Include, module\mode\JMode\JMode.ahk
+    #Include, module\mode\JMode\JModeO.ahk
+    #Include, module\mode\JMode\JModeL.ahk
+    #Include, module\mode\PunctuationMode\PunctuationMode.ahk
+    #Include, module\mode\DigitMode\DigitMode.ahk
+    #Include, module\mode\DigitMode\FnMode.ahk
+    #Include, module\mode\CapslockMode\CapslockMode.ahk 
+    #Include, module\mode\CapslockMode\FMode.ahk
+    #Include, module\mode\CapslockMode\SpaceMode.ahk
+    #Include, module\mode\MouseMode\RButtonMode.ahk
+    #Include, module\mode\CommandAndAbbr\Command.ahk 
+    #Include, module\mode\CommandAndAbbr\Abbr.ahk 
 
-  #if JModeL
-  l::return
-*W::
-  send, {blind}^+{tab}
-return
-*C::
-  send, {blind}^{bs}
-return
-*G::
-  send, {blind}^{end}
-return
-*A::
-  send, {blind}^{home}
-return
-*S::
-  send, {blind}^{left}
-return
-*F::
-  send, {blind}^{right}
-return
-*R::
-  send, {blind}^{tab}
-return
-*T::
-  send {blind}{pgdn}
-return
-*Q::
-  send {blind}{pgup}
-return
+    #if DisableCapslockKey
+      *capslock::return
+  *capslock up::return
 
-#if JMode
-  ; 把原来的k改成o，因为k会影响双拼。
-o::enterJModeK()
-l::enterJModeL()
+  #IfWinActive, ahk_group TASK_SWITCH_GROUP
+    ; *W::send, {blind}+{Tab}
+    ; *R::send, {blind}{Tab}
+    *D::send, {blind}{down}
+    *E::send, {blind}{up}
+    *S::send, {blind}{left}
+    *F::send, {blind}{right}
+    *X::send, {blind}{del}
+    *Space::send, {blind}{enter}
+    #If
 
-*Space::
-  send {blind}{enter}
-return
-; 拼音及双拼修复 - start
-*I::
-  send, {blind}ji
-return
-*k::
-  send, {blind}jk
-return
-*p::
-  send, {blind}jp
-return
-*b::
-  send, {blind}jb
-return
-*t::
-  send, {blind}jt
-return
-; 拼音及双拼修复 - end
-*.::
-  send, {blind}{insert}
-return
-*W::send {blind}+{tab}
-*Z::send {blind}{appskey}
-*C::send {blind}{backspace}
-*V::send {blind}{delete}
-*D::send {blind}{down}
-*G::send {blind}{end}
-*X::send {blind}{esc}
-*A::send {blind}{home}
-*S::send {blind}{left}
-; *T::send {blind}{pgdn}
-; *Q::send {blind}{pgup}
-*F::send {blind}{right}
-*R::send {blind}{tab}
-*E::send {blind}{up}
-
-; 分号模式 (符号)
-#if PunctuationMode
-*A::
-send {blind}*
-return
-*I::
-send {blind}:
-return
-*B::
-  send, {blind}`%
-return
-*J::
-  send, {blind}`;
-return
-*K::
-  send, {blind}``
-return
-*H::
-  send, {blind}{+}
-return
-*O::
-  send, {blind}{end};
-return
-*Space::
-  send, {blind}{enter}
-return
-*U::send {blind}$
-*R::send {blind}&
-*Q::send {blind}@
-*M::send {blind}-
-*C::send {blind}.
-*L::send {blind}?
-*N::send {blind}/
-*S::send {blind}<
-*D::send {blind}=
-*F::send {blind}>
-*Y::send {blind}@
-*Z::send {blind}\
-*X::send {blind}|
-*G::send {blind}{!}
-*W::send {blind}{#}
-*E::send {blind}{^}
-*V::send {blind}_
-*T::send {blind}~
-
-; 数字模式
-#if DigitMode
-
-; *B::
-; send, {blind}7
-; return
-; *Space::
-; send, {blind}{f1}
-; return
-; 方案1
-; *H::send {blind}0
-; *J::send {blind}1
-; *K::send {blind}2
-; *L::send {blind}3
-; *U::send {blind}4
-; *I::send {blind}5
-; *O::send {blind}6
-; *N::send {blind}8
-; *M::send {blind}9
-
-; 方案2
-; *L::send {blind}0
-; *B::send {blind}1
-; *N::send {blind}2
-; *M::send {blind}3
-; *H::send {blind}4
-; *J::send {blind}5
-; *K::send {blind}6
-; *Y::send {blind}7
-; *U::send {blind}8
-; *I::send {blind}9
-
-; 方案3
-; u7 i8 o9
-; j4 k5 l6
-; m1 ,2 .3
-; h0 ;,
-*N::send {blind}0
-*M::send {blind}1
-*,::send {blind}2
-*.::send {blind}3
-*J::send {blind}4
-*K::send {blind}5
-*L::send {blind}6
-*U::send {blind}7
-*I::send {blind}8
-*O::send {blind}9
-*;::send {blind},
-*Q::send {blind}{backspace}
-
-*r::
-  DigitMode := false
-  FnMode := true
-  keywait r
-  FnMode := false
-return
-
-#if FnMode
-*r::return
-
-*.::
-  send, {blind}{f12}
-return
-*B::
-  send, {blind}{f7}
-return
-*H::send {blind}{f10}
-*,::send {blind}{f11}
-*J::send {blind}{f1}
-*K::send {blind}{f2}
-*L::send {blind}{f3}
-*U::send {blind}{f4}
-*I::send {blind}{f5}
-*O::send {blind}{f6}
-*N::send {blind}{f8}
-*M::send {blind}{f9}
-
-#if CapslockMode
-
-*C::
-  send {blind}#{left}
-return
-*T::
-  send {blind}#{right}
-return
-S::centerAndResizeCurrentWindowToCurrentMonitor(1200, 800)
-A::centerAndResizeCurrentWindowToCurrentMonitor(800, 600)
-*/::centerMouse()
-*I::fastMoveMouse("I", 0, -1)
-*J::fastMoveMouse("J", -1, 0)
-*K::fastMoveMouse("K", 0, 1)
-*L::fastMoveMouse("L", 1, 0)
-*,::lbuttonDown()
-*N::leftClick()
-*.::moveCurrentWindow()
-*M::rightClick()
-*`;::scrollWheel(";", 4)
-*H::scrollWheel("H", 3)
-*O::scrollWheel("O", 2)
-*U::scrollWheel("U", 1)
-W::send !{tab}
-D::send #+{right}
-E::send ^!{tab}
-Y::send {LControl down}{LWin down}{Left}{LWin up}{LControl up}
-P::send {LControl down}{LWin down}{Right}{LWin up}{LControl up}
-X::SmartCloseWindow()
-R::SwitchWindows()
-Q::toggleWinmaximize()
-B::winMinimizeIgnoreDesktop()
-*=:: ;窗口透明化增加或者减弱
-  WinGet, ow, id, A
-  WinTransplus(ow)
-return
-*-:: ;窗口透明化增加或者减弱
-  WinGet, ow, id, A
-  WinTransMinus(ow)
-return
-0::openSuperMenu()
-
-f::
-  FMode := true
-  CapslockMode := false
-  SLOWMODE := false
-  keywait f
-  FMode := false
-return
-space::
-  CapslockSpaceMode := true
-  CapslockMode := false
-  SLOWMODE := false
-  keywait space
-  CapslockSpaceMode := false
-return
-
-WheelUp::send {blind}^#{left}
-WheelDown::send {blind}^#{right}
-
-#if SLOWMODE
-
-*/::centerMouse()
-*I::slowMoveMouse("I", 0, -1)
-*J::slowMoveMouse("J", -1, 0)
-*K::slowMoveMouse("K", 0, 1)
-*L::slowMoveMouse("L", 1, 0)
-*,::lbuttonDown()
-*N::leftClick()
-*.::moveCurrentWindow()
-*M::rightClick(true)
-*`;::scrollWheel(";", 4)
-*H::scrollWheel("H", 3)
-*O::scrollWheel("O", 2)
-*U::scrollWheel("U", 1)
-
-Esc::exitMouseMode()
-*Space::exitMouseMode()
-
-; capslock 的 f mode
-#if FMode
-f::return
-
-,::
-  global CapslockF__comma
-  bindOrActivate(CapslockF__comma)
-return
-M::
-  global CapslockF__M
-  bindOrActivate(CapslockF__M)
-return
-N::
-  global CapslockF__N
-  bindOrActivate(CapslockF__N)
-return
-K::
-  path = %A_ProgramFiles%\DAUM\PotPlayer\PotPlayerMini64.exe
-  workingDir = 
-  ActivateOrRun("ahk_class PotPlayer64", path, "", workingDir)
-return
-Q::
-  path = %A_ProgramFiles%\Everything\Everything.exe
-  ActivateOrRun("ahk_class EVERYTHING", path)
-return
-U::
-  path = %A_Programs%\JetBrains Toolbox\DataGrip.lnk
-  ActivateOrRun("ahk_exe datagrip64.exe", path)
-return
-J::
-  path = %A_Programs%\JetBrains Toolbox\IntelliJ IDEA Ultimate.lnk
-  ActivateOrRun("ahk_exe idea64.exe", path, "", "")
-return
-S::
-  path =C:\Program Files\Microsoft VS Code\Code.exe
-  ActivateOrRun("ahk_exe Code.exe", path)
-return
-W::
-  ; path = %A_ProgramsCommon%\Google Chrome.lnk
-  path = C:\Users\Administrator.USER-20181115EQ\AppData\Local\360Chrome\Chrome\Application\360chrome.exe
-  ActivateOrRun("ahk_exe 360chrome.exe", path)
-return
-Y::
-  path = C:\Program Files (x86)\Youdao\YoudaoNote\YoudaoNote.exe 
-  ActivateOrRun("ahk_exe YoudaoNote.exe", path)
-return
-D::
-  path = C:\Program Files (x86)\Notepad++\notepad++.exe
-  ActivateOrRun("ahk_exe notepad++.exe", path, "", "")
-return
-H::
-  path = %A_ProgramsCommon%\Visual Studio 2019.lnk
-  ActivateOrRun("- Microsoft Visual Studio", path)
-return
-E::
-  ; path = C:\Program Files (x86)\Youdao\YoudaoNote\YoudaoNote.exe
-  ; ActivateOrRun("ahk_exe YoudaoNote.exe", path)
-  path = E:\Program Files\VNote\VNote.exe
-  ActivateOrRun("ahk_exe VNote.exe", path)
-return
-I::
-  path = C:\Program Files\Typora\Typora.exe
-  ActivateOrRun("ahk_exe Typora.exe", path)
-return
-L::
-  path = C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Excel.lnk
-  workingDir = 
-  ActivateOrRun("ahk_exe EXCEL.EXE", path, "", workingDir)
-return
-P::
-  ; window terminal 
-  path =C:\Users\Administrator.USER-20181115EQ\AppData\Local\Microsoft\WindowsApps\wt.exe 
-  ; path = C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
-  ;true 表示用管理员模式运行
-  ActivateOrRun("ahk_exe WindowsTerminal.exe", path, "", "",true)
-return
-Z::
-  path = D:\
-  ActivateOrRun("ahk_class CabinetWClass ahk_exe Explorer.EXE", path)
-return
-R::
-  path = D:\install\Foxit Reader\FoxitReader.exe
-  ActivateOrRun("ahk_exe FoxitReader.exe", path)
-return
-O::
-  path = shortcuts\OneNote for Windows 10.lnk
-    ActivateOrRun("OneNote for Windows 10", path)
-return
-A::
-  ; Run, %ComSpec% /k ping 8.8.8.8
-  path = %windir%\system32\cmd.exe
-  ActivateOrRun("ahk_exe cmd.exe", path)
-
-return
-B::
-  path = "E:\Program Files\BookxNote Pro\BookxNotePro.exe"
-  ActivateOrRun("ahk_exe BookxNotePro.exe", path)
-return
-
-#if CapslockSpaceMode
-space::return
-f::
-  send, {Blind}测试 Capslock_space 模式
-return 
-
-#if DisableCapslockKey
-*capslock::return
-*capslock up::return
-
-#if RButtonMode
-*Z::
-send {blind}#v
-return
-*Space::
-  send {blind}{enter}
-return
-*G::
-  send, {blind}{end}
-return
-*X::
-  send, {blind}{esc}
-return
-*A::
-  send, {blind}{home}
-return
-*C::send {blind}{backspace}
-*V::send {blind}{delete}
-*D::send {blind}{down}
-*S::send {blind}{left}
-*F::send {blind}{right}
-*E::send {blind}{up}
-
-LButton::
-  ; if WinActive("ahk_class MultitaskingViewFrame")
-  if ( A_PriorHotkey == "~LButton" || A_PriorHotkey == "LButton")
-    send #{tab}
-  else
-    send ^!{tab}
-return
-WheelUp::send ^+{tab}
-WheelDown::send ^{tab}
-
-#IfWinActive, ahk_group TASK_SWITCH_GROUP
-  ; *W::send, {blind}+{Tab}
-  ; *R::send, {blind}{Tab}
-  *D::send, {blind}{down}
-  *E::send, {blind}{up}
-  *S::send, {blind}{left}
-  *F::send, {blind}{right}
-  *X::send, {blind}{del}
-  *Space::send, {blind}{enter}
-  #If
-
-  ; 进入符号模式
-  enterSemicolonAbbr(ih) 
-  {
-    global DisableCapslockKey
-    DisableCapslockKey := true
-
-    typoTip.show(" ") 
-    ih.Start()
-    ih.Wait()
-    ih.Stop()
-    typoTip.hide()
-    DisableCapslockKey := false
-
-    if (ih.Match)
-      execSemicolonAbbr(ih.Match)
-  }
-
-  onTypoChar(ih, char) {
-    typoTip.show(ih.Input)
-  }
-
-  onTypoEnd(ih) {
-    ; typoTip.show(ih.Input)
-  }
-  ; 符号模式
-  ; 在这里添加的命令，也需要在 semiHook 里面添加
-  execSemicolonAbbr(typo) {
-    switch typo 
+    ; 进入符号模式
+    enterSemicolonAbbr(ih) 
     {
-    case "ver":
-      send, {blind}#r
-      sleep 700
-      send, {blind}winver{enter}
-    return
-  case "zh":
-    send, {blind}{text} site:zhihu.com
-  return
-case "ss":
-  send, {blind}{text}""
-  send, {blind}{left}
-return
-case "xk":
-  send, {blind}{text}()
-  send, {blind}{left 1}
-return
-case "gg":
-  send, {blind}{text}git add -A`; git commit -a -m ""`; git push origin (git branch --show-current)`;
-  send, {blind}{left 47}
-return
-case "static":
-  send, {blind}{text}https://static.xianyukang.com/
-return
-case "dk":
-  send, {blind}{text}{}
-  send, {blind}{left}
-return
-case "xm":
-  send, {blind}{text}❖` ` 
-return
-case "jt":
-  send, {blind}{text}➤` ` 
-return
-case "fs":
-  send, {blind}{text}、
-return
-case "ff":
-  send, {blind}{text}。
-return
-case "sm":
-  send, {blind}{text}《》
-  send, {blind}{left}
-return
-case "sk":
-  send, {blind}{text}「 」
-  send, {blind}{left 2}
-return
-case "sl":
-  send, {blind}{text}【】
-  send, {blind}{left 1}
-return
-case "fd":
-  send, {blind}{text}，
-return
-case "gt":
-  send, {blind}{text}🐶
-return
-case "lx":
-  send, {blind}{text}💚
-return
-case "zk":
-  send {blind}[]{left}
-default: 
-return false
-}
-return true
-}
+      global DisableCapslockKey
+      DisableCapslockKey := true
 
-; 执行capslock指令
-execCapslockAbbr(typo) {
-  switch typo 
-  {
-  case "bb":
-    path = C:\Program Files\Google\Chrome\Application\chrome.exe
-    ActivateOrRun("Bing 词典", path, "--app=https://cn.bing.com/dict/search?q=nice", "")
-  return
-case "cm":
-  path =C:\Program Files\Microsoft VS Code\Code.exe
-  ActivateOrRun("MyKeymap - Visual Studio Code", path, "D:\MyFiles\MyKeymap", "")
-return 
-case "ci":
-  path =C:\Program Files\Microsoft VS Code\Code.exe
-  ActivateOrRun("chm_im_generate_words_file - Visual Studio Code", path, "F:\neo_project\chm_im_generate_words_file", "")
-return
-case "cs":
-  path =C:\Program Files\Microsoft VS Code\Code.exe
-  ActivateOrRun("my_site - Visual Studio Code", path, "D:\project\my_site", "")
-return
-case "dd":
-  run, shell:downloads
-case "dm":
-  run, %A_WorkingDir%
-case "dp":
-  run, shell:my pictures
-case "dr":
-  run, shell:RecycleBinFolder
-case "dv":
-  run, shell:My Video
-case "dw":
-  run, shell:Personal
-case "ee":
-  ToggleTopMost()
-case "et":
-  ; 用notepad++ 编辑temp.ahk
-  path = C:\Program Files (x86)\Notepad++\notepad++.exe
-  temp := % A_ScriptDir . "\data\lib\temp.ahk"
-  ActivateOrRun("temp.ahk - notepad++.exe", path,temp,"")
-return
-case "ex":
-  quit(false)
-case "fw":
-  path = %A_ProgramsCommon%\Google Chrome.lnk
-  ActivateOrRun("", path, "", "")
-return
-case "fb":
-  setColor("#2E66FF")
-case "fg":
-  setColor("#080")
-case "fi":
-  setColor("#FF00FF")
-case "fp":
-  setColor("#b309bb")
-case "fr":
-  setColor("#D05")
-case "gg":
-  path = C:\Program Files\Google\Chrome\Application\chrome.exe
-  ActivateOrRun("Google 翻译", path, "--app=https://translate.google.cn/?op=translate&sl=auto&tl=zh-CN&text=nice", "")
-return
-case "io":
-  path = %A_Programs%\JetBrains Toolbox\IntelliJ IDEA Ultimate.lnk
-  ActivateOrRun("room-order-api ahk_exe idea64.exe", path, "D:\work\room-order-api", "")
-return
-case "ir":
-  path = %A_Programs%\JetBrains Toolbox\IntelliJ IDEA Ultimate.lnk
-  ActivateOrRun("room-api ahk_exe idea64.exe", path, "D:\work\room-api", "")
-return
-case "ld":
-  run, module\tools\changeBrightness.ahk
-  ;  run, module\ahk.exe module\changeBrightness.ahk
-case "md":
-  path = D:\project\my_site\docs\MyKeymap.md
-  ActivateOrRun("MyKeymap.md - Typora", path, "", "")
-return
-case "mm":
-  path = D:\notes\MyKeymap-Roadmap.md
-  ActivateOrRun("MyKeymap-Roadmap.md - Typora", path, "", "")
-return
-case "mw":
-  path = D:\notes\working.md
-  ActivateOrRun("working.md - Typora", path, "", "")
-return
-case "no":
-  path = C:\Program Files (x86)\Notepad++\notepad++.exe
-  ActivateOrRun("ahk_exe notepad++.exe", path, "", "")
-return
-case "rb":
-  slideToReboot()
-case "rex":
-  restartExplorer()
-case "sd":
-  run, module\tools\soundControl.ahk
-  ;  run, module\ahk.exe module\soundControl.ahk
-  ; case "se":
-  ;    openSettings()
-case "sl":
-  DllCall("PowrProf\SetSuspendState", "Int", 0, "Int", 0, "Int", 0)
-return
-case "ss":
-  slideToShutdown()
-case "st":
-  path = shortcuts\Store.lnk
-  ActivateOrRun("Microsoft Store", path, "", "")
-return
-case "we":
-  path = C:\Program Files (x86)\Netease\CloudMusic\cloudmusic.exe 
-  ActivateOrRun("ahk_exe cloudmusic.exe", path)
-case "ws":
-  run, module\tools\WindowSpy.ahk
-  ;  run, module\ahk.exe module\soundControl.ahk
-default: 
-return false
-}
-return true
-}
+      typoTip.show(" ") 
+      ih.Start()
+      ih.Wait()
+      ih.Stop()
+      typoTip.hide()
+      DisableCapslockKey := false
 
-capsOnTypoChar(ih, char) {
-  postCharToTipWidnow(char)
-}
+      if (ih.Match)
+        execSemicolonAbbr(ih.Match)
+    }
 
-capsOnTypoEnd(ih) {
-  ; typoTip.show(ih.Input)
-}
+    onTypoChar(ih, char) {
+      typoTip.show(ih.Input)
+    }
 
-; 记录当前输入的指令
-global CapslockAbbrCommandChar = ""
-enterCapslockAbbr(ih) 
-{
+    onTypoEnd(ih) {
+      ; typoTip.show(ih.Input)
+    }
 
-  WM_USER := 0x0400
-  SHOW_TYPO_WINDOW := WM_USER + 0x0001
-  HIDE_TYPO_WINDOW := WM_USER + 0x0002
+    capsOnTypoChar(ih, char) {
+      postCharToTipWidnow(char)
+    }
 
-  _ShowTip(CapslockAbbrCommandChar,60)
-  ; postMessageToTipWidnow(SHOW_TYPO_WINDOW)
-  ; result := ""
+    capsOnTypoEnd(ih) {
+      ; typoTip.show(ih.Input)
+    }
 
-  ih.Start()
-  endReason := ih.Wait()
-  ih.Stop()
-  if InStr(endReason, "EndKey") {
-    CapslockAbbrCommandChar := ""
-    ; SetTimer, CancelTip, 50
-    CancelTip()
-  }
-  if InStr(endReason, "Match") {
-    lastChar := SubStr(ih.Match, ih.Match.Length-1)
-    postCharToTipWidnow(lastChar)
-    SetTimer, delayedHideTipWindow, -50
+    ; 记录当前输入的指令
+    global CapslockAbbrCommandChar = ""
+    enterCapslockAbbr(ih) 
+    {
 
-    CapslockAbbrCommandChar := ""
-    ; SetTimer, CancelTip, 300
-    CancelTip()
-    ; } else {
-    ;   postMessageToTipWidnow(HIDE_TYPO_WINDOW)
-  }
-  if (ih.Match)
-    execCapslockAbbr(ih.Match)
-}
+      WM_USER := 0x0400
+      SHOW_TYPO_WINDOW := WM_USER + 0x0001
+      HIDE_TYPO_WINDOW := WM_USER + 0x0002
 
-delayedHideTipWindow()
-{
-  HIDE_TYPO_WINDOW := 0x0400 + 0x0002
-  postMessageToTipWidnow(HIDE_TYPO_WINDOW)
-}
+      _ShowTip(CapslockAbbrCommandChar,60)
+      ; postMessageToTipWidnow(SHOW_TYPO_WINDOW)
+      ; result := ""
+
+      ih.Start()
+      endReason := ih.Wait()
+      ih.Stop()
+      if InStr(endReason, "EndKey") {
+        CapslockAbbrCommandChar := ""
+        ; SetTimer, CancelTip, 50
+        CancelTip()
+      }
+      if InStr(endReason, "Match") {
+        lastChar := SubStr(ih.Match, ih.Match.Length-1)
+        postCharToTipWidnow(lastChar)
+        SetTimer, delayedHideTipWindow, -50
+
+        CapslockAbbrCommandChar := ""
+        ; SetTimer, CancelTip, 300
+        CancelTip()
+        ; } else {
+        ;   postMessageToTipWidnow(HIDE_TYPO_WINDOW)
+      }
+      if (ih.Match)
+        execCapslockAbbr(ih.Match)
+    }
+
+    delayedHideTipWindow()
+    {
+      HIDE_TYPO_WINDOW := 0x0400 + 0x0002
+      postMessageToTipWidnow(HIDE_TYPO_WINDOW)
+    }

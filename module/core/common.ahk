@@ -37,9 +37,9 @@ _ShowTip(text, size)
   Gui,G_Tip:New
   GUI, +Owner +LastFound
 
-  global g_config
-  Font_Colour := % g_config.style.fgColor ;0x2879ff
-  Back_Colour := % g_config.style.bgColor ; 0x34495e
+  global gConfig
+  Font_Colour := % gConfig.style.fgColor ;0x2879ff
+  Back_Colour := % gConfig.style.bgColor ; 0x34495e
   GUI, Margin, %fontsize%, % fontsize / 2
   GUI, Color, % Back_Colour
   GUI, Font, c%Font_Colour% s%fontsize% w700, Microsoft YaHei UI

@@ -9,11 +9,8 @@
   if (InStr(ItemName, "帮助文档" )) {
     run, https://xianyukang.com/MyKeymap.html
   }
-  if (InStr(ItemName, "autoHotKey文档-中文" )) {
+  if (InStr(ItemName, "AutoHotKey文档" )) {
     run, https://wyagd001.github.io/zh-cn/docs/Tutorial.htm
-  }
-  if (InStr(ItemName, "autoHotKey文档-英文" )) {
-    run, https://www.autohotkey.com/docs/Tutorial.htm
   }
   if (InStr(ItemName, "查看窗口标识符" )) {
     run, module\tools\WindowSpy.ahk

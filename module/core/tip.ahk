@@ -6,9 +6,9 @@
     fontSize := 21
     this.fontSize := fontSize
 
-    global g_config
-    Font_Colour := % g_config.style.fgColor ;0x2879ff
-    Back_Colour := % g_config.style.bgColor ;0xffffe1 ; 0x34495e
+    global gConfig
+    Font_Colour := % gConfig.style.fgColor ;0x2879ff
+    Back_Colour := % gConfig.style.bgColor ;0xffffe1 ; 0x34495e
 
     Gui, TYPO_TIP_WINDOW:New, +hwndhGui, ` 
     this.hwnd := hGui ; 保存 hwnd 目前没什么用

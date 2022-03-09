@@ -209,18 +209,3 @@ htmlEscape(text)
 
           }
 
-          enterJModeK()
-          {
-            global
-            JModeK := true
-            keywait o
-            JModeK := false
-          }
-
-          enterJModeL()
-          {
-            global
-            JModeL := true
-            keywait l
-            JModeL := false
-          }
