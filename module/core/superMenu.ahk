@@ -1,0 +1,3 @@
+﻿openSuperMenu(){
+  MsgBox, test
+}

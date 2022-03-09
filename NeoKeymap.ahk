@@ -6,15 +6,10 @@
 #InstallKeybdHook ; 可能是 ahk 自动卸载 hook 导致的丢失 hook,  如果用这行指令, ahk 是否就不会卸载 hook 了呢?
 #include data/config.ahk
 global g_config := readConfig()
-#Include, module/common.ahk
-#Include, module/system.ahk
-#Include module/util/win.ahk
-#include module/functions.ahk
+
+#include, module/main.ahk
 #Include, module/libs/ExecScript.ahk
 ; Include, module\libs\customToolTip.ahk
-
-; 全局配置
-global useExplorePinyin := false
 
 ; temp := g_config.test
 ; MsgBox, % temp
@@ -75,8 +70,11 @@ allHotkeys.Push("*;")
   ; Menu, Tray, Add, 打开设置, trayMenuHandler 
   Menu, Tray, Add, 视频教程, trayMenuHandler
   Menu, Tray, Add, 帮助文档, trayMenuHandler 
+  Menu, Tray, Add, autoHotKey文档-英文, trayMenuHandler 
+  Menu, Tray, Add, autoHotKey文档-中文, trayMenuHandler 
   Menu, Tray, Add, 检查更新, trayMenuHandler 
   Menu, Tray, Add, 查看窗口标识符, trayMenuHandler 
+  Menu, Tray, Add, 打开设置, trayMenuHandler 
   Menu, Tray, Add, 重新载入, trayMenuHandler 
   Menu, Tray, Add, 暂停, trayMenuHandler
   Menu, Tray, Add, 退出, trayMenuHandler
@@ -89,6 +87,8 @@ allHotkeys.Push("*;")
   author := g_config.author
   Menu, Tray, Tip, %name% %version% by %author% `n修改自 MyKeymap by 咸鱼阿康
   ; processPath := getProcessPath()
+  ; MsgBox, % processPath
+  ; run,% processPath
   ; SetWorkingDir, %processPath%
 
   CoordMode, Mouse, Screen
@@ -107,20 +107,31 @@ allHotkeys.Push("*;")
   #include data/customFunctions.ahk
   return
 
+  /* 
+    键位映射 
+  */
   RAlt::LCtrl
   /::LShift
 
+  /*
+    软件操作快捷键 
+  */
+  ; 暂停/恢复 shift + alt + '
   !+'::
     Suspend, Permit
     toggleSuspend()
   return
+  ; 重新加载 alt + '
   !'::
     Suspend, Toggle
     ReloadProgram()
   return
-
+  ; 切换大小写 alt + capslock
   !capslock::toggleCapslock()
 
+  /*
+    按键模式 
+  */
   *capslock::
     thisHotkey := A_ThisHotkey
     disableOtherHotkey(thisHotkey)
@@ -457,8 +468,8 @@ return
 *T::
   send {blind}#{right}
 return
-S::center_window_to_current_monitor(1200, 800)
-A::center_window_to_current_monitor(800, 600)
+S::centerAndResizeCurrentWindowToCurrentMonitor(1200, 800)
+A::centerAndResizeCurrentWindowToCurrentMonitor(800, 600)
 */::centerMouse()
 *I::fastMoveMouse("I", 0, -1)
 *J::fastMoveMouse("J", -1, 0)
@@ -575,8 +586,6 @@ Y::
   ActivateOrRun("ahk_exe YoudaoNote.exe", path)
 return
 D::
-  ; path = %A_ProgramsCommon%\Microsoft Edge.lnk
-  ; ActivateOrRun("ahk_exe msedge.exe", path)
   path = C:\Program Files (x86)\Notepad++\notepad++.exe
   ActivateOrRun("ahk_exe notepad++.exe", path, "", "")
 return
@@ -683,84 +692,93 @@ WheelDown::send ^{tab}
   *Space::send, {blind}{enter}
   #If
 
+  ; 进入符号模式
+  enterSemicolonAbbr(ih) 
+  {
+    global DisableCapslockKey
+    DisableCapslockKey := true
+
+    typoTip.show(" ") 
+    ih.Start()
+    ih.Wait()
+    ih.Stop()
+    typoTip.hide()
+    DisableCapslockKey := false
+
+    if (ih.Match)
+      execSemicolonAbbr(ih.Match)
+  }
+
+  onTypoChar(ih, char) {
+    typoTip.show(ih.Input)
+  }
+
+  onTypoEnd(ih) {
+    ; typoTip.show(ih.Input)
+  }
+  ; 符号模式
+  ; 在这里添加的命令，也需要在 semiHook 里面添加
   execSemicolonAbbr(typo) {
     switch typo 
     {
     case "ver":
-
       send, {blind}#r
       sleep 700
       send, {blind}winver{enter}
     return
   case "zh":
-
     send, {blind}{text} site:zhihu.com
   return
 case "ss":
-
   send, {blind}{text}""
   send, {blind}{left}
 return
 case "xk":
-
   send, {blind}{text}()
   send, {blind}{left 1}
 return
 case "gg":
-
   send, {blind}{text}git add -A`; git commit -a -m ""`; git push origin (git branch --show-current)`;
   send, {blind}{left 47}
 return
 case "static":
-
   send, {blind}{text}https://static.xianyukang.com/
 return
 case "dk":
-
   send, {blind}{text}{}
   send, {blind}{left}
 return
 case "xm":
-
   send, {blind}{text}❖` ` 
 return
 case "jt":
-
   send, {blind}{text}➤` ` 
 return
 case "fs":
-
   send, {blind}{text}、
 return
 case "ff":
-
   send, {blind}{text}。
 return
 case "sm":
-
   send, {blind}{text}《》
   send, {blind}{left}
 return
 case "sk":
-
   send, {blind}{text}「 」
   send, {blind}{left 2}
 return
 case "sl":
-
   send, {blind}{text}【】
   send, {blind}{left 1}
 return
 case "fd":
-
   send, {blind}{text}，
 return
 case "gt":
-
   send, {blind}{text}🐶
 return
 case "lx":
-
   send, {blind}{text}💚
 return
 case "zk":
@@ -888,29 +906,6 @@ return false
 return true
 }
 
-enterSemicolonAbbr(ih) 
-{
-  global DisableCapslockKey
-  DisableCapslockKey := true
-
-  typoTip.show(" ") 
-  ih.Start()
-  ih.Wait()
-  ih.Stop()
-  typoTip.hide()
-  DisableCapslockKey := false
-
-  if (ih.Match)
-    execSemicolonAbbr(ih.Match)
-}
-
-onTypoChar(ih, char) {
-  typoTip.show(ih.Input)
-}
-
-onTypoEnd(ih) {
-  ; typoTip.show(ih.Input)
-}
 capsOnTypoChar(ih, char) {
   postCharToTipWidnow(char)
 }
