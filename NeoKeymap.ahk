@@ -4,14 +4,17 @@
 #NoTrayIcon
 #WinActivateForce ; 解决「 winactivate 最小化的窗口时不会把窗口放到顶层(被其他窗口遮住) 」
 #InstallKeybdHook ; 可能是 ahk 自动卸载 hook 导致的丢失 hook,  如果用这行指令, ahk 是否就不会卸载 hook 了呢?
+#include data/config.ahk
+global g_config := readConfig()
 #Include, module/common.ahk
 #Include, module/system.ahk
+#Include module/util/win.ahk
 #include module/functions.ahk
-#include data/config.ahk
 #Include, module/libs/ExecScript.ahk
+; Include, module\libs\customToolTip.ahk
 
 ; 全局配置
-global g_config := readConfig()
+global useExplorePinyin := false
 
 ; temp := g_config.test
 ; MsgBox, % temp
@@ -19,6 +22,7 @@ global g_config := readConfig()
 
 StringCaseSense, On
 SetWorkingDir %A_ScriptDir%
+; 如果不是以管理员身份运行的话，就尝试用管理员身份重新运行
 requireAdmin()
 closeOldInstance()
 
@@ -403,12 +407,12 @@ return
 ; 方案3
 ; u7 i8 o9
 ; j4 k5 l6
-; n1 m2 ,3
+; m1 ,2 .3
 ; h0 ;,
-*H::send {blind}0
-*N::send {blind}1
-*M::send {blind}2
-*,::send {blind}3
+*N::send {blind}0
+*M::send {blind}1
+*,::send {blind}2
+*.::send {blind}3
 *J::send {blind}4
 *K::send {blind}5
 *L::send {blind}6
@@ -475,7 +479,7 @@ Y::send {LControl down}{LWin down}{Left}{LWin up}{LControl up}
 P::send {LControl down}{LWin down}{Right}{LWin up}{LControl up}
 X::SmartCloseWindow()
 R::SwitchWindows()
-Q::winmaximize, A
+Q::toggleWinmaximize()
 B::winMinimizeIgnoreDesktop()
 *=:: ;窗口透明化增加或者减弱
   WinGet, ow, id, A
@@ -485,6 +489,7 @@ return
   WinGet, ow, id, A
   WinTransMinus(ow)
 return
+0::openSuperMenu()
 
 f::
   FMode := true
@@ -595,8 +600,11 @@ L::
   ActivateOrRun("ahk_exe EXCEL.EXE", path, "", workingDir)
 return
 P::
-  path = C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
-  ActivateOrRun("ahk_exe powershell.exe", path, "", "")
+  ; window terminal 
+  path =C:\Users\Administrator.USER-20181115EQ\AppData\Local\Microsoft\WindowsApps\wt.exe 
+  ; path = C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+  ;true 表示用管理员模式运行
+  ActivateOrRun("ahk_exe WindowsTerminal.exe", path, "", "",true)
 return
 Z::
   path = D:\
@@ -611,9 +619,10 @@ O::
     ActivateOrRun("OneNote for Windows 10", path)
 return
 A::
-  ; path = shortcuts\Windows Terminal Preview.lnk
+  ; Run, %ComSpec% /k ping 8.8.8.8
   path = %windir%\system32\cmd.exe
   ActivateOrRun("ahk_exe cmd.exe", path)
+
 return
 B::
   path = "E:\Program Files\BookxNote Pro\BookxNotePro.exe"
@@ -914,11 +923,12 @@ capsOnTypoEnd(ih) {
 global CapslockAbbrCommandChar = ""
 enterCapslockAbbr(ih) 
 {
-  _ShowTip("",60)
+
   WM_USER := 0x0400
   SHOW_TYPO_WINDOW := WM_USER + 0x0001
   HIDE_TYPO_WINDOW := WM_USER + 0x0002
 
+  _ShowTip(CapslockAbbrCommandChar,60)
   ; postMessageToTipWidnow(SHOW_TYPO_WINDOW)
   ; result := ""
 

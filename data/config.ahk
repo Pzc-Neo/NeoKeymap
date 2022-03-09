@@ -16,7 +16,30 @@ getConfigPath(){
 
 readConfig(){
   configPath := getConfigPath()
-  FileRead, jsonStr, % configPath
-  config := JSON.load(jsonStr)
+  config := readJsonFile(configPath)
   Return config
+}
+
+writeConfig(config){
+  ; configPath := getConfigPath()
+  tempConfig :=% config
+  tempConfig.t1 := "fdsa"
+  config := tempConfig
+  str := JSON.Dump(tempConfig)
+  ; writeJsonFile(str,1)
+}
+
+readJsonFile(filePath){
+  FileRead, jsonStr, % filePath
+  obj := JSON.Load(jsonStr)
+  Return obj
+}
+
+writeJsonFile(obj, filePath){
+  jsonStr := JSON.Dump(obj)
+  ; 去除两边的引号
+  SubStr(jsonStr, 1, StrLen(jsonStr)) 
+  File := FileOpen("data\data.json","w")
+  File.Write(jsonStr)
+  File.Close()
 }

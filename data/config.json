@@ -3,8 +3,8 @@
   "author": "潘志城_Neo",
   "version": "1.0.0",
   "style": {
-    "fgColor": "0x333333",
-    "bgColor": "0xffffff"
+    "fgColor": "0xa8b7c5",
+    "bgColor": "0x282C34"
   },
   "test": "send, {blind}`%  \nsend, {blind}<> \nsend, {blind}``",
   "test1": "run C:\\Program Files (x86)\\Notepad++\\notepad++.exe"
