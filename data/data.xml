@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<author>潘志城_Neo</author>
+	<name>NeoKeymap</name>
+	<style>
+		<bgColor>0xffffff</bgColor>
+		<fgColor>0x333333</fgColor>
+	</style>
+	<t1>fdsa</t1>
+	<test>send, {blind}`%  
+send, {blind}&lt;&gt; 
+send, {blind}``</test>
+	<test1>run C:\Program Files (x86)\Notepad++\notepad++.exe</test1>
+	<version>1.0.0</version>
+</config>

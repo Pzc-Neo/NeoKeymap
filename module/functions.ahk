@@ -457,6 +457,9 @@ fastMoveMouse(key, direction_x, direction_y) {
   }
 }
 
+openSuperMenu(){
+  MsgBox, test
+}
 ShowDimmer()
 {
   global H_DImmer
@@ -873,6 +876,7 @@ htmlEscape(text)
 
               text := " " ; 初始化 text control 的宽度
               fontSize := 21
+              this.fontSize := fontSize
 
               global g_config
               Font_Colour := % g_config.style.fgColor ;0x2879ff
@@ -882,9 +886,9 @@ htmlEscape(text)
               this.hwnd := hGui ; 保存 hwnd 目前没什么用
 
               Gui, +Owner +ToolWindow +Disabled -SysMenu -Caption +E0x20 +AlwaysOnTop +Border
-              GUI, Margin, % fontsize/5, % fontsize / 5
+              GUI, Margin, % fontSize/5, % fontSize / 5
               GUI, Color, % Back_Colour
-              GUI, Font, c%Font_Colour% s%fontsize%, Microsoft Sans Serif
+              GUI, Font, c%Font_Colour% s%fontSize%, Microsoft Sans Serif
 
               static ControlID ; 存储控件 ID,  不同于 Hwnd
               GUI, Add, Text, vControlID w50 h30 center, %text%
@@ -896,7 +900,9 @@ htmlEscape(text)
 
             ; isAbsolutePosition: 是不是绝对定位，还是相对于鼠标定位。
             show(text,isAbsolutePosition:= False) {
-              GuiControl, Text, % this.textHwnd, %text%
+              gWidth := StrLen(text)*(this.fontSize)
+              GuiControl, Text, % this.textHwnd, %text% 
+              GuiControl, Move, % this.textHwnd, w%gWidth%
               if(isAbsolutePosition){
                 SysGet, currMon, Monitor, % current_monitor_index()
                 GUI, show 
@@ -909,7 +915,7 @@ htmlEscape(text)
                 xpos += 10
                 ypos += 7
               }
-              Gui, TYPO_TIP_WINDOW:Show, AutoSize Center NoActivate x%xpos% y%ypos%
+              Gui, TYPO_TIP_WINDOW:Show, AutoSize Center NoActivate x%xpos% y%ypos% 
             }
 
             hide() {
@@ -929,11 +935,11 @@ htmlEscape(text)
             if not A_IsAdmin
             {
               try {
-                Run *RunAs "MyKeymap.exe" ; 需要 v1.0.92.01+
+                Run *RunAs "NeoKeymap.ahk" ; 需要 v1.0.92.01+
                 myExit()
               }
               catch {
-                tip("MyKeymap 当前以普通权限运行 `n在一些高权限窗口中会完全失效 (比如任务管理器)", -3700)
+                tip("NeoKeymap 当前以普通权限运行 `n在一些高权限窗口中会完全失效 (比如任务管理器)", -3700)
               }
             }
           }
@@ -941,7 +947,8 @@ htmlEscape(text)
           getProcessList(pname)
           {
             result := []
-            for proc in ComObjGet("winmgmts:").ExecQuery("SELECT Name,Handle FROM Win32_Process WHERE Name='MyKeymap.exe'")
+            query := % "SELECT Name,Handle FROM Win32_Process WHERE Name='" . pname . "'"
+            for proc in ComObjGet("winmgmts:").ExecQuery(query)
               result.push(proc.Handle)
             return result
           }
@@ -950,7 +957,7 @@ htmlEscape(text)
           {
 
             thisPid := DllCall("GetCurrentProcessId")
-            for index,pid in getProcessList("MyKeymap.exe")
+            for index,pid in getProcessList("AutoHotkey.exe")
             {
               if (pid != thisPid) {
                 Process, Close, %pid%
@@ -1009,11 +1016,11 @@ htmlEscape(text)
             Suspend, Toggle
             if (A_IsSuspended) {
               Menu, Tray, Check, 暂停
-              tip(" 暂停 MyKeymap ", -500)
+              tip(" 暂停 NeoKeymap ", -500)
             }
             else {
               Menu, Tray, UnCheck, 暂停
-              tip(" 恢复 MyKeymap ", -500)
+              tip(" 恢复 NeoKeymap ", -500)
             }
           }
 
@@ -1044,13 +1051,6 @@ htmlEscape(text)
               toggleSuspend()
             }
 
-          }
-
-          moveCurrentWindow()
-          {
-            PostMessage, 0x0112, 0xF010, 0,, A
-            sleep 50
-            SendInput, {right}
           }
 
           bindOrActivate(ByRef id)

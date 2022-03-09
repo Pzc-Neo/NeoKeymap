@@ -27,7 +27,7 @@ _ShowTip(text, size)
   Gui_Y := (currMonTop + currMonBottom) * 0.8
   GUI, show, NoActivate x%Gui_X% y%Gui_Y%, Tip
 
-  GUI, +ToolWindow +Disabled -SysMenu -Caption +E0x20 +AlwaysOnTop 
+  GUI, +ToolWindow +Disabled -SysMenu -Caption +E0x20 +AlwaysOnTop +border
   GUI, show, Autosize NoActivate
 
 }
