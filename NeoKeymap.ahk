@@ -6,12 +6,23 @@
 #InstallKeybdHook ; 可能是 ahk 自动卸载 hook 导致的丢失 hook,  如果用这行指令, ahk 是否就不会卸载 hook 了呢?
 #include data/config.ahk
 global gConfig := readConfig()
+global gValues :={ mode: "Normal"}
+global VimMode := {on:false, mode:"Normal"}
+toggleVimMode(){
+  global VimMode
+  if(VimMode.on){
+    VimMode.on := false
+  }else{
+    VimMode.on := true
+  }
+  ShowTip(VimMode.on?"开启Vim模式":"关闭Vim模式",1000)
+}
 
 #include, module/main.ahk
 #Include, module/libs/ExecScript.ahk
 ; #Include, module\libs\customToolTip.ahk
 
-StringCaseSense, On
+stringCaseSense, On
 SetWorkingDir %A_ScriptDir%
 ; 如果不是以管理员身份运行的话，就尝试用管理员身份重新运行
 requireAdmin()
@@ -227,6 +238,7 @@ allHotkeys.Push("*;")
     #Include, module\mode\MouseMode\RButtonMode.ahk
     #Include, module\mode\CommandAndAbbr\Command.ahk 
     #Include, module\mode\CommandAndAbbr\Abbr.ahk 
+    #Include, module\mode\VimMode\VimMode.ahk 
 
     #if DisableCapslockKey
       *capslock::return
@@ -317,3 +329,8 @@ allHotkeys.Push("*;")
       HIDE_TYPO_WINDOW := 0x0400 + 0x0002
       postMessageToTipWidnow(HIDE_TYPO_WINDOW)
     }
+
+    ; 不同窗口的快捷键
+    #Include, module\plugins\explorer.ahk
+    #Include, module\plugins\BookxNote.ahk
+    #Include, module\plugins\YoudaoNote.ahk

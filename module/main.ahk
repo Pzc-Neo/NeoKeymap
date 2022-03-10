@@ -1,4 +1,5 @@
-﻿; 【通用】函数
+﻿#Include, module/util/path.ahk
+; 【通用】函数
 #Include, module/core/common.ahk
 ; 【提示】函数：消息提示框等
 #Include, module/core/tip.ahk
@@ -13,6 +14,20 @@
 #Include, module/core/shellRun.ahk
 #Include, module/core/superMenu.ahk
 
+setGlobalValue(key,value){
+  global gValues
+  gValues[%key%] := value
+  writeJsonFile(gValueObj, "temp\test002.json")
+}
+
+getMode(){
+  global gValues
+  return gValues.mode 
+}
+getGlobalValue(){
+  global gValues
+  return gValues
+}
 postCharToTipWidnow(char) {
   oldValue := A_DetectHiddenWindows
 

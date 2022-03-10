@@ -39,7 +39,7 @@ writeJsonFile(obj, filePath){
   jsonStr := JSON.Dump(obj)
   ; 去除两边的引号
   SubStr(jsonStr, 1, StrLen(jsonStr)) 
-  File := FileOpen("data\data.json","w")
+  File := FileOpen(filePath,"w")
   File.Write(jsonStr)
   File.Close()
 }

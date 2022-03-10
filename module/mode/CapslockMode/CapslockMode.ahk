@@ -5,6 +5,7 @@ return
 *T::
   send {blind}#{right}
 return
+V::toggleVimMode()
 S::centerAndResizeCurrentWindowToCurrentMonitor(1200, 800)
 A::centerAndResizeCurrentWindowToCurrentMonitor(800, 600)
 */::centerMouse()

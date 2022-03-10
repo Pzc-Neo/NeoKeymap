@@ -1,8 +1,1 @@
-{
-  "author": "\u6f58\u5fd7\u57ce_Neo",
-  "name": "NeoKeymap",
-  "style": { "bgColor": "0xffffff", "fgColor": "0x333333" },
-  "test": "send, {blind}`%  \nsend, {blind}<> \nsend, {blind}``",
-  "test1": "run C:\\Program Files (x86)\\Notepad++\\notepad++.exe",
-  "version": "1.0.0"
-}
+{}
