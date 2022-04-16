@@ -27,7 +27,7 @@ return
 *U::send {blind}$
 *R::send {blind}&
 *Q::send {blind}@
-*M::send {blind}-
+*E::send {blind}-
 *C::send {blind}.
 *L::send {blind}?
 *N::send {blind}/
@@ -39,7 +39,7 @@ return
 *X::send {blind}|
 *G::send {blind}{!}
 *W::send {blind}{#}
-*E::send {blind}{^}
+*M::send {blind}{^}
 *V::send {blind}_
 *T::send {blind}~
 #if

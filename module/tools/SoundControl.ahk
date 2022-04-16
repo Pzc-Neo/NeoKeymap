@@ -67,7 +67,7 @@ class CLayout
     w := this.X + 175
     h := 320
     Gui Show, w%w% h%h%, 声音控制
-    WinSet, Transparent, 220, 声音控制
+    WinSet, Transparent, 235, 声音控制
     disableIME(GuiHwnd)
   }
 

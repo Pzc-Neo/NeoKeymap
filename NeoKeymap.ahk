@@ -8,12 +8,15 @@
 global gConfig := readConfig()
 global gValues :={ mode: "Normal"}
 global VimMode := {on:false, mode:"Normal"}
+
 toggleVimMode(){
   global VimMode
   if(VimMode.on){
     VimMode.on := false
+    Menu, Tray, Icon, assets\logo.ico,, 1
   }else{
     VimMode.on := true
+    Menu, Tray, Icon, assets\logo_vim.ico,, 1
   }
   ShowTip(VimMode.on?"开启Vim模式":"关闭Vim模式",1000)
 }
@@ -331,6 +334,6 @@ allHotkeys.Push("*;")
     }
 
     ; 不同窗口的快捷键
-    #Include, module\plugins\explorer.ahk
+    ; #Include, module\plugins\explorer.ahk
     #Include, module\plugins\BookxNote.ahk
-    #Include, module\plugins\YoudaoNote.ahk
+    ; #Include, module\plugins\YoudaoNote.ahk

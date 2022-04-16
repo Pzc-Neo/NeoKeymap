@@ -2,13 +2,26 @@
   *capslock::
   global VimMode
   VimMode.mode := "Normal"
-  send,{Blind}{Up}
-  send,{Blind}{Down}
-Return
-*+v::
-  Send, {Blind}{ShiftUp}}{Home}+{End}
+  ; send,{Blind}{Up}
+  ; send,{Blind}{Down}
+  send,{Blind}{Right}
 Return
 
+; leader
+*Space::
+  global VimMode
+  VimMode.mode := "Leader"
+Return
+
+;因为习惯了按viw，所以加上这个
+*i::return
+*+v::
+  Send, {Blind}{ShiftUp}{Home}+{End}
+Return
+*v::
+Return
+
+; 移动
 *h::
   send,{Blind}+{Left}
 Return
@@ -21,9 +34,6 @@ Return
 *l::
   send,{Blind}+{Right}
 Return
-;因为习惯了按viw
-*i::
-return
 *w::
   ; Send, {blind}+^{Right}
   Send, {blind}^{left}
@@ -34,12 +44,30 @@ Return
 Return
 
 *x::
+  send,{Blind}^c
   send,{Blind}{BackSpace}
   global VimMode
   VimMode.mode := "Normal"
 Return
+*c::
+  send,{Blind}^c
+  send,{Blind}{BackSpace}
+  global VimMode
+  VimMode.mode := "Insert"
+Return
 *d::
+  send,{Blind}^c
   send,{Blind}{delete}
+  global VimMode
+  VimMode.mode := "Normal"
+Return
+*0::
+  Send, {Blind}+{Home}
+  global VimMode
+  VimMode.mode := "Normal"
+Return
+*$::
+  Send, {Blind}+{end}
   global VimMode
   VimMode.mode := "Normal"
 Return

@@ -3,6 +3,18 @@
   global VimMode
   VimMode.mode := "Insert"
 Return
+*a::
+  global VimMode
+  VimMode.mode := "Insert"
+  send,{Blind}{Right}
+Return
+
+; leader
+*Space::
+  global VimMode
+  VimMode.mode := "Leader"
+Return
+
 ; 插入
 +i::
   global VimMode
@@ -67,11 +79,17 @@ Return
 *l::
   send,{Blind}{Right}
 Return
+*0::
+  Send, {Blind}{Home}
+Return
+*$::
+  Send, {Blind}{ShiftUp}{end}
+Return
 *w::
   Send, {blind}^{Right}
 Return
 *+w::
-  Send, {blind}^{Left}
+  Send, {blind}{ShiftUp}^{Left}{ShiftDown}
 Return
 
 ; 粘贴
@@ -81,24 +99,25 @@ Return
 
 ; 删除
 *x::
-  send,{Blind}{BackSpace}
+  send,{Blind}{delete}
 Return
 *d::
-  send,{Blind}{delete}
+  ; send,{Blind}{delete}
+  global VimMode
+  VimMode.mode := "Delect"
 return
-; d::
-;   if (A_PriorHotkey <> "d" or A_TimeSincePriorHotkey > 400)
-;   {
-;     KeyWait, d
-;     return
-;   }else{
-;     Send, {Blind}{Home}+{End}
-;     send,{Blind}{delete}
-;   }
-; Return
++c::
+  Send, {Blind}+{end}
+  send,{Blind}{delete}
+  global VimMode
+  VimMode.mode := "Normal"
+Return
 
 *u::
   send,{Blind}^z
+Return
+*+u::
+  send,{Blind}{ShiftUp}^y{ShiftDown}
 Return
 ^r::
   send,{Blind}^y

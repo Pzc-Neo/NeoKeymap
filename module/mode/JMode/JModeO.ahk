@@ -1,5 +1,5 @@
 ﻿#if JModeO
-  k::return
+  o::return
 *V::
   send, {blind}+{del}
 return

@@ -8,6 +8,7 @@ SetWorkingDir %A_ScriptDir% ; Ensures a consistent starting directory.
 Menu, Tray, Icon, ..\..\assets\logo.ico
 SendMode Input ; Recommended for new scripts due to its superior speed and reliability.
 
+#include data/config.ahk
 #Include, %A_ScriptDir%\Monitor.ahk
 
 Gui, +LastFound
@@ -67,9 +68,16 @@ class CLayout
     this.count := c
     this.mon := []
     this.curr := 1
+
+    config := readConfig()
+    fgColor := % config.style.fgColor ;0x2879ff
+    bgColor := % config.style.bgColor ; 0x34495e
+    this.fgColor := fgColor
+    this.bgColor := bgColor
+
     Gui MyGui:New, +HwndGuiHwnd +Resize
     Gui MyGui:+LabelMyGui_On
-    Gui, Font, s12, 等线
+    Gui, Font, s12 c%fgColor%, 等线
     Gui Add, Text, x10 y280 w290 h20 +0x200, EDSF调节亮度、WR切换显示器、X退出
     Gui Add, Text, x10 y300 w490 h20 +0x200, 如果不起作用, 用 Win+P 断开并重连该显示器, 然后重启本程序试试
 
@@ -80,6 +88,7 @@ class CLayout
     w := this.X + 70
     h := 320
     Gui Show, w%w% h%h%, 显示器亮度调节
+    WinSet, Transparent, 235, 显示器亮度调节
     disableIME(GuiHwnd)
   }
 
@@ -139,7 +148,17 @@ class CMon
     global monitorIcon3
     global monitorIcon4
 
-    Gui, Font, s128 c0
+    config := readConfig()
+    fgColor := % config.style.fgColor ;0x2879ff
+    bgColor := % config.style.bgColor ; 0x34495e
+    this.fgColor := fgColor
+    this.bgColor := bgColor
+
+    GUI, Color, % this.bgColor
+    ; GUI, Font, c%Font_Colour% s12, Microsoft YaHei UI
+    GUI, Font, c%fgColor% s12, 等线
+
+    Gui, Font, s128 c%fgColor%
     Gui Add, Text, x%X% y%Y% w%W% h%H% +0x200 vMonitorIcon%i%, 🖥️
     X += 58
     Y += 60
@@ -165,7 +184,8 @@ class CMon
   deactivate()
   {
     i := this.i
-    Gui, Font, s128 c0
+    fgColor := this.fgColor
+    Gui, Font, s128 c%fgColor%
     GuiControl, Font, monitorIcon%i%
     Gui, Font, s32 cFFFFFF
     GuiControl, Font, monitorText%i%
