@@ -27,13 +27,13 @@
 
 现在找到的这个`MyKeymap`，简直就是神器。虽然有些设置不符合我的使用习惯，但是那些地方，自己改改就好了。
 
-顺便说一下，浏览器上我之前用的用的是`vimium`，现在用的是[surfingkey](https://github.com/brookhong/Surfingkeys)
+顺便说一下，浏览器上我以前用的是`vimium`，现在用的是[surfingkey](https://github.com/brookhong/Surfingkeys)
 
 ## 不用原版的原因
 
 ### 很多键不能自定义，或者说自定义很麻烦
 
-需要在 template 那里修改，不然每次改设置，之前修改的内容斗会都会被重置。
+需要在 template 那里修改，不然每次改设置，之前修改的内容都会被重置。
 
 ## 修改的内容
 
@@ -47,8 +47,6 @@
 **关于启动器**
 就是那个 MyKeymaps.exe 和那一大堆的`dll`，貌似不是必须的，毕竟我的电脑本身就装了`autohotkey`，所以把它们去掉了，只剩下`.ahk`文件和图标之类的。
 
-<!-- capslock指令窗口需要 -->
-
 就算在没有装 autohotkey 的电脑上面用，也可以直接把`.ahk`文件编译成 exe。
 
 ### capslock 指令键->右 shift 键
@@ -60,3 +58,5 @@
 ### jk->jo
 
 我用小鹤双拼，jk 是经常用的按键，所以改成 jo。
+
+### / 键 -> shift 键
