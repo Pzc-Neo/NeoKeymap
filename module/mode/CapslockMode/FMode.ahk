@@ -28,7 +28,7 @@ U::
   ActivateOrRun("ahk_exe datagrip64.exe", path)
 return
 J::
-  path = %A_Programs%\JetBrains Toolbox\IntelliJ IDEA Ultimate.lnk
+  path = E:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2020.3.2\bin\idea64.exe
   ActivateOrRun("ahk_exe idea64.exe", path, "", "")
 return
 S::
@@ -82,6 +82,9 @@ R::
   path = D:\install\Foxit Reader\FoxitReader.exe
   ActivateOrRun("ahk_exe FoxitReader.exe", path)
 return
+X::
+  path = E:\Program Files (x86)\NetSarang\Xshell 7\Xshell.exe
+  ActivateOrRun("ahk_exe Xshell.exe", path)
 O::
   path = shortcuts\OneNote for Windows 10.lnk
     ActivateOrRun("OneNote for Windows 10", path)

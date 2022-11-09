@@ -122,6 +122,9 @@ Return
 ^r::
   send,{Blind}^y
 Return
+*n::
+  send,{enter}
+Return
 
 *f::
   global VimMode

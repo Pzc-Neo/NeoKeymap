@@ -1,3 +1,4 @@
+; 需要在Neokeymap.ahk 中的 capsHook 中注册
 ; 执行capslock指令
 execCapslockAbbr(typo) {
   switch typo 
@@ -84,6 +85,10 @@ return
 case "no":
   path = C:\Program Files (x86)\Notepad++\notepad++.exe
   ActivateOrRun("ahk_exe notepad++.exe", path, "", "")
+return
+case "qq":
+  path = D:\Program Files (x86)\Tencent\QQ\Bin\QQ.exe
+  ActivateOrRun("ahk_exe QQ.exe", path, "", "")
 return
 case "rb":
   slideToReboot()

@@ -104,7 +104,7 @@ allHotkeys.Push("*;")
   semiHook := InputHook("C", "{Space}{BackSpace}{Esc}", "xk,ss,sk,sl,zk,dk,jt,gt,lx,sm,zh,gg,ver,xm,static,fs,fd,ff")
   semiHook.OnChar := Func("onTypoChar")
   semiHook.OnEnd := Func("onTypoEnd")
-  capsHook := InputHook("C", "{Space}{BackSpace}{Esc}", "bb,cm,cs,ci,dd,dm,dp,dr,dv,dw,ee,et,ex,fb,fg,fi,fp,fr,fw,gg,io,ir,ld,md,mm,mw,no,rb,rex,sd,se,sl,ss,st,we,ws")
+  capsHook := InputHook("C", "{Space}{BackSpace}{Esc}", "bb,cm,cs,ci,dd,dm,dp,dr,dv,dw,ee,et,ex,fb,fg,fi,fp,fr,fw,gg,io,ir,ld,md,mm,mw,no,rb,rex,qq,sd,se,sl,ss,st,we,ws")
   capsHook.OnChar := Func("capsOnTypoChar")
   capsHook.OnEnd := Func("capsOnTypoEnd")
 
@@ -335,5 +335,5 @@ allHotkeys.Push("*;")
 
     ; 不同窗口的快捷键
     ; #Include, module\plugins\explorer.ahk
-    #Include, module\plugins\BookxNote.ahk
+    ; #Include, module\plugins\BookxNote.ahk
     ; #Include, module\plugins\YoudaoNote.ahk
